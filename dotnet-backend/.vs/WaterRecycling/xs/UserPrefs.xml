@@ -1,0 +1,22 @@
+﻿<Properties StartupConfiguration="{CA6E0354-BA2C-4AA5-9EDC-9D1546E78F77}|Default">
+  <MonoDevelop.Ide.ItemProperties.WaterRecycling PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Api/Entities/DbKwikemartContext.cs">
+    <Files>
+      <File FileName="Api/Program.cs" Line="1" Column="1" />
+      <File FileName="Api/Startup.cs" Line="1" Column="25" />
+      <File FileName="Api/Entities/DbKwikemartContext.cs" Line="27" Column="55" />
+      <File FileName="Api/Entities/Product.cs" Line="11" Column="1" />
+      <File FileName="Api/Entities/Role.cs" Line="1" Column="25" />
+      <File FileName="Api/Entities/TypeProduct.cs" Line="4" Column="1" />
+      <File FileName="Api/Entities/User.cs" Line="6" Column="1" />
+      <File FileName="Api/appsettings.Development.json" Line="1" Column="1" />
+      <File FileName="Api/appsettings.json" Line="1" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MultiItemStartupConfigurations />
+</Properties>

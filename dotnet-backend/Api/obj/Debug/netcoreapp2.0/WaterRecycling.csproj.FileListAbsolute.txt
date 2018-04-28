@@ -1,0 +1,11 @@
+/Users/ramirobedoya/workspace/water-recycling-system-backend/dotnet-backend/Api/bin/Debug/netcoreapp2.0/WaterRecycling.deps.json
+/Users/ramirobedoya/workspace/water-recycling-system-backend/dotnet-backend/Api/bin/Debug/netcoreapp2.0/WaterRecycling.runtimeconfig.json
+/Users/ramirobedoya/workspace/water-recycling-system-backend/dotnet-backend/Api/bin/Debug/netcoreapp2.0/WaterRecycling.runtimeconfig.dev.json
+/Users/ramirobedoya/workspace/water-recycling-system-backend/dotnet-backend/Api/bin/Debug/netcoreapp2.0/WaterRecycling.dll
+/Users/ramirobedoya/workspace/water-recycling-system-backend/dotnet-backend/Api/bin/Debug/netcoreapp2.0/WaterRecycling.pdb
+/Users/ramirobedoya/workspace/water-recycling-system-backend/dotnet-backend/Api/obj/Debug/netcoreapp2.0/WaterRecycling.csprojResolveAssemblyReference.cache
+/Users/ramirobedoya/workspace/water-recycling-system-backend/dotnet-backend/Api/obj/Debug/netcoreapp2.0/WaterRecycling.csproj.CoreCompileInputs.cache
+/Users/ramirobedoya/workspace/water-recycling-system-backend/dotnet-backend/Api/obj/Debug/netcoreapp2.0/WaterRecycling.AssemblyInfoInputs.cache
+/Users/ramirobedoya/workspace/water-recycling-system-backend/dotnet-backend/Api/obj/Debug/netcoreapp2.0/WaterRecycling.AssemblyInfo.cs
+/Users/ramirobedoya/workspace/water-recycling-system-backend/dotnet-backend/Api/obj/Debug/netcoreapp2.0/WaterRecycling.dll
+/Users/ramirobedoya/workspace/water-recycling-system-backend/dotnet-backend/Api/obj/Debug/netcoreapp2.0/WaterRecycling.pdb
