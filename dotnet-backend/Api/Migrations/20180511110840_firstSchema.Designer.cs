@@ -11,8 +11,8 @@ using WaterRecycling.Entities;
 namespace WaterRecycling.Migrations
 {
     [DbContext(typeof(DbWaterRecyclingContext))]
-    [Migration("20180428171127_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20180511110840_firstSchema")]
+    partial class firstSchema
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -132,32 +132,37 @@ namespace WaterRecycling.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("WaterRecycling.Entities.Product", b =>
+            modelBuilder.Entity("WaterRecycling.Entities.Device", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Code");
 
-                    b.Property<int>("IdTypeProduct");
+                    b.Property<DateTime>("Created");
+
+                    b.Property<string>("Ip");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IdTypeProduct");
-
-                    b.ToTable("Products");
+                    b.ToTable("Devices");
                 });
 
-            modelBuilder.Entity("WaterRecycling.Entities.TypeProduct", b =>
+            modelBuilder.Entity("WaterRecycling.Entities.RecyclingProcess", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                    b.Property<int>("Id");
 
-                    b.Property<string>("Description");
+                    b.Property<DateTime>("CaptureDate");
+
+                    b.Property<decimal>("Distance");
+
+                    b.Property<int>("Process");
+
+                    b.Property<decimal>("Turbidity");
 
                     b.HasKey("Id");
 
-                    b.ToTable("TypeProducts");
+                    b.ToTable("RecyclingProcesses");
                 });
 
             modelBuilder.Entity("WaterRecycling.Entities.User", b =>
@@ -265,11 +270,11 @@ namespace WaterRecycling.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("WaterRecycling.Entities.Product", b =>
+            modelBuilder.Entity("WaterRecycling.Entities.RecyclingProcess", b =>
                 {
-                    b.HasOne("WaterRecycling.Entities.TypeProduct", "TypeProduct")
-                        .WithMany("Products")
-                        .HasForeignKey("IdTypeProduct")
+                    b.HasOne("WaterRecycling.Entities.Device", "From")
+                        .WithMany("RecyclingProcessList")
+                        .HasForeignKey("Id")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

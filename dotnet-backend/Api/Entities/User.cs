@@ -6,6 +6,5 @@ namespace WaterRecycling.Entities
 
     public class User: IdentityUser
     {
-
     }
 }

@@ -1,0 +1,3 @@
+dotnet-backend/Api/bin/
+dotnet-backend/Api/obj/
+.DS_Store

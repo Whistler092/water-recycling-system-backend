@@ -13,7 +13,7 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - db-data-water-recycling:/var/lib/mysql
+      - db-data-water-2:/var/lib/mysql
   water-recycling:
     image: water-recycling
     build:  
@@ -27,4 +27,4 @@ services:
       - "8000:80"
 
 volumes:
-  db-data-water-recycling:
+  db-data-water-2:

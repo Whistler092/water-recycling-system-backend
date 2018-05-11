@@ -5,6 +5,5 @@ namespace WaterRecycling.Entities
 
     public class Role: IdentityRole
     {
-        public string Discriminator { get; set; }
     }
 }

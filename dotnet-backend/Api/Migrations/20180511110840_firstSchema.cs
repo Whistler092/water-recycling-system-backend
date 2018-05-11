@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace WaterRecycling.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class firstSchema : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -49,16 +49,18 @@ namespace WaterRecycling.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "TypeProducts",
+                name: "Devices",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySQL:AutoIncrement", true),
-                    Description = table.Column<string>(nullable: true)
+                    Code = table.Column<string>(nullable: true),
+                    Created = table.Column<DateTime>(nullable: false),
+                    Ip = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TypeProducts", x => x.Id);
+                    table.PrimaryKey("PK_Devices", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -168,21 +170,22 @@ namespace WaterRecycling.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Products",
+                name: "RecyclingProcesses",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("MySQL:AutoIncrement", true),
-                    Description = table.Column<string>(nullable: true),
-                    IdTypeProduct = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(nullable: false),
+                    CaptureDate = table.Column<DateTime>(nullable: false),
+                    Distance = table.Column<decimal>(nullable: false),
+                    Process = table.Column<int>(nullable: false),
+                    Turbidity = table.Column<decimal>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Products", x => x.Id);
+                    table.PrimaryKey("PK_RecyclingProcesses", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Products_TypeProducts_IdTypeProduct",
-                        column: x => x.IdTypeProduct,
-                        principalTable: "TypeProducts",
+                        name: "FK_RecyclingProcesses_Devices_Id",
+                        column: x => x.Id,
+                        principalTable: "Devices",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -223,11 +226,6 @@ namespace WaterRecycling.Migrations
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
                 unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Products_IdTypeProduct",
-                table: "Products",
-                column: "IdTypeProduct");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -248,7 +246,7 @@ namespace WaterRecycling.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Products");
+                name: "RecyclingProcesses");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -257,7 +255,7 @@ namespace WaterRecycling.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "TypeProducts");
+                name: "Devices");
         }
     }
 }

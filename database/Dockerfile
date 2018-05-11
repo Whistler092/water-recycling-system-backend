@@ -1,4 +1,4 @@
-FROM mysql/mysql-server
+FROM mysql:5.7.6
 RUN chown -R mysql:root /var/lib/mysql/
 
 # ADD mysql /var/lib/mysql

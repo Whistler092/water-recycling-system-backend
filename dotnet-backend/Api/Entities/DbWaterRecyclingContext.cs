@@ -23,7 +23,7 @@ namespace WaterRecycling.Entities
         {
             get
             {
-                const string serverName = "127.0.0.1";
+                const string serverName = "0.0.0.0";
                 const string databaseName = "water-recycling";
                 const string databaseUser = "root";
                 const string databasePass = "12345";
@@ -37,16 +37,18 @@ namespace WaterRecycling.Entities
         }
         public new DbSet<User> Users { get; set; }
         public new DbSet<Role> Roles { get; set; }
-        public DbSet<Product> Products { get; set; }
-        public DbSet<TypeProduct> TypeProducts { get; set; }
+
+        public DbSet<Device> Devices { get; set; }
+        public DbSet<RecyclingProcess> RecyclingProcesses { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-                        modelBuilder.Entity<Product>()
-            .HasOne(p => p.TypeProduct)
-            .WithMany(b => b.Products)
-            .HasForeignKey(f=> f.IdTypeProduct);
+                    modelBuilder.Entity<RecyclingProcess>()
+                .HasOne(p => p.From)
+                .WithMany(b => b.RecyclingProcessList)
+                .HasForeignKey(f=> f.Id);
         }
     }
 }
