@@ -15,6 +15,6 @@ namespace WaterRecycling.Entities
 
         public List<RecyclingProcess> RecyclingProcessList { get; set; }
 
-
+        public bool State { get; set; }
     }
 }

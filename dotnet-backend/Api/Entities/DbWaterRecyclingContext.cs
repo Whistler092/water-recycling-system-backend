@@ -23,7 +23,7 @@ namespace WaterRecycling.Entities
         {
             get
             {
-                const string serverName = "0.0.0.0";
+                const string serverName = "mysql";
                 const string databaseName = "water-recycling";
                 const string databaseUser = "root";
                 const string databasePass = "12345";

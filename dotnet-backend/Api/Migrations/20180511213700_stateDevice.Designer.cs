@@ -11,9 +11,10 @@ using WaterRecycling.Entities;
 namespace WaterRecycling.Migrations
 {
     [DbContext(typeof(DbWaterRecyclingContext))]
-    partial class DbWaterRecyclingContextModelSnapshot : ModelSnapshot
+    [Migration("20180511213700_stateDevice")]
+    partial class stateDevice
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

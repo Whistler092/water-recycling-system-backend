@@ -3,6 +3,7 @@ namespace WaterRecycling.Controllers
 {
     using System;
     using System.Linq;
+    using System.Net;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
@@ -56,6 +57,73 @@ namespace WaterRecycling.Controllers
                 return Ok(code);
             }
         }
+
+        // GET: api/devices
+        [Route("{id}/activate")]
+        public async Task<IActionResult> ActivateCode(string id)
+        {
+            try
+            {
+                using (DbWaterRecyclingContext db = new DbWaterRecyclingContext())
+                {
+                    var code = await db.Devices.Where(i => i.Code.Equals(id)).FirstOrDefaultAsync();
+
+                    if (code == null)
+                    {
+                        return BadRequest();
+                    }
+                    if (code.State)
+                    {
+                        return Ok(99);
+                    }
+
+                    code.State = true;
+
+                    db.Update(code);
+
+                    await db.SaveChangesAsync();
+                    return Ok(10);
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex);
+            }
+        }
+
+        // GET: api/devices
+        [Route("{id}/remove")]
+        public async Task<IActionResult> RemoveCode(string id)
+        {
+            try
+            {
+                using (DbWaterRecyclingContext db = new DbWaterRecyclingContext())
+                {
+                    var code = await db.Devices.Where(i => i.Code.Equals(id)).FirstOrDefaultAsync();
+
+                    if (code == null)
+                    {
+                        return BadRequest("Código Incorrecto");
+                    }
+                    if (code.State)
+                    {
+                        code.State = false;
+
+                        db.Update(code);
+
+                        await db.SaveChangesAsync();
+                        return Ok("Dispositivo Desasociado correctamente");
+                    }
+
+                    return BadRequest("El código no está asociado a ningun dispositivo");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex);
+            }
+        }
+
 
         private static string GenerateUniqueCode()
         {

@@ -1,8 +1,8 @@
-version: '3'
+version: '2'
 services:
   mysql:
     hostname: mysql-water-recycling
-    container_name: mysql-water-recycling
+    container_name: mysql
     build:
       context: ./database
       args:
@@ -10,21 +10,23 @@ services:
           - MYSQL_USER=${MYSQL_USER}
           - MYSQL_PASSWORD=${MYSQL_PASSWORD}
           - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-    ports:
-      - "3306:3306"
+    # ports:
+    #   - "3306:3306"
     volumes:
       - db-data-water-2:/var/lib/mysql
   water-recycling:
     image: water-recycling
+    container_name: water-recycling-backend
     build:  
       context: ./dotnet-backend
       dockerfile: Dockerfile
     depends_on:
       - mysql
+    restart: always
     links:
       - mysql
     ports:
-      - "8000:80"
+      - "5000:80"
 
 volumes:
   db-data-water-2:
