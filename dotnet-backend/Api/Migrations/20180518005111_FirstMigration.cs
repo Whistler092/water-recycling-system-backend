@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace WaterRecycling.Migrations
 {
-    public partial class stateDevice : Migration
+    public partial class FirstMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -54,9 +54,10 @@ namespace WaterRecycling.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySQL:AutoIncrement", true),
-                    Code = table.Column<string>(nullable: true),
+                    Code = table.Column<string>(maxLength: 8, nullable: true),
                     Created = table.Column<DateTime>(nullable: false),
-                    Ip = table.Column<string>(nullable: true),
+                    DeviceToken = table.Column<string>(maxLength: 512, nullable: true),
+                    Ip = table.Column<string>(maxLength: 64, nullable: true),
                     State = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
@@ -174,18 +175,20 @@ namespace WaterRecycling.Migrations
                 name: "RecyclingProcesses",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("MySQL:AutoIncrement", true),
                     CaptureDate = table.Column<DateTime>(nullable: false),
                     Distance = table.Column<decimal>(nullable: false),
-                    Process = table.Column<int>(nullable: false),
+                    IdFrom = table.Column<int>(nullable: false),
+                    Process = table.Column<string>(maxLength: 12, nullable: true),
                     Turbidity = table.Column<decimal>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_RecyclingProcesses", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_RecyclingProcesses_Devices_Id",
-                        column: x => x.Id,
+                        name: "FK_RecyclingProcesses_Devices_IdFrom",
+                        column: x => x.IdFrom,
                         principalTable: "Devices",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -227,6 +230,11 @@ namespace WaterRecycling.Migrations
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RecyclingProcesses_IdFrom",
+                table: "RecyclingProcesses",
+                column: "IdFrom");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

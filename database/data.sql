@@ -1,3 +1,5 @@
+CREATE SCHEMA IF NOT EXISTS `water-recycling` DEFAULT CHARACTER SET latin1 ;
+
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -7,7 +9,10 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
- 
+
+# Dump of table __EFMigrationsHistory
+# ------------------------------------------------------------
+
 DROP TABLE IF EXISTS `__EFMigrationsHistory`;
 
 CREATE TABLE `__EFMigrationsHistory` (
@@ -21,7 +26,7 @@ LOCK TABLES `__EFMigrationsHistory` WRITE;
 
 INSERT INTO `__EFMigrationsHistory` (`MigrationId`, `ProductVersion`)
 VALUES
-	('20180511110840_firstSchema','2.0.1-rtm-125');
+	('20180518005111_FirstMigration','2.0.1-rtm-125');
 
 /*!40000 ALTER TABLE `__EFMigrationsHistory` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -162,9 +167,10 @@ DROP TABLE IF EXISTS `Devices`;
 
 CREATE TABLE `Devices` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
-  `Code` text,
+  `Code` varchar(8) DEFAULT NULL,
   `Created` datetime NOT NULL,
-  `Ip` text,
+  `DeviceToken` varchar(512) DEFAULT NULL,
+  `Ip` varchar(64) DEFAULT NULL,
   `State` bit(1) NOT NULL,
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -172,11 +178,9 @@ CREATE TABLE `Devices` (
 LOCK TABLES `Devices` WRITE;
 /*!40000 ALTER TABLE `Devices` DISABLE KEYS */;
 
-INSERT INTO `Devices` (`Id`, `Code`, `Created`, `Ip`, `State`)
+INSERT INTO `Devices` (`Id`, `Code`, `Created`, `DeviceToken`, `Ip`, `State`)
 VALUES
-	(1,'3337','2018-05-11 13:15:38','',b'1'),
-	(2,'4186','2018-05-11 13:57:36','',b'0'),
-	(3,'9136','2018-05-11 16:44:02','::1',b'0');
+	(1,'7021','2018-05-17 19:53:00','dU4nz9L99dc:APA91bEsYxGHrR9m7YM0Apmj9EhVTuMBNHQTQzQZvSNe_iZ_qp_9We8ZLadcsjy0ufHQM3pbkppZIyCirGHmto_dWU107nbgH8RV5bREGZT07GgR3s2uFrUVw8mSMAeSlZkLU3axEZn7','::1',b'0');
 
 /*!40000 ALTER TABLE `Devices` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -188,13 +192,15 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS `RecyclingProcesses`;
 
 CREATE TABLE `RecyclingProcesses` (
-  `Id` int(11) NOT NULL,
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
   `CaptureDate` datetime NOT NULL,
   `Distance` decimal(18,2) NOT NULL,
-  `Process` int(11) NOT NULL,
+  `IdFrom` int(11) NOT NULL,
+  `Process` varchar(12) DEFAULT NULL,
   `Turbidity` decimal(18,2) NOT NULL,
   PRIMARY KEY (`Id`),
-  CONSTRAINT `FK_RecyclingProcesses_Devices_Id` FOREIGN KEY (`Id`) REFERENCES `Devices` (`Id`) ON DELETE CASCADE
+  KEY `IX_RecyclingProcesses_IdFrom` (`IdFrom`),
+  CONSTRAINT `FK_RecyclingProcesses_Devices_IdFrom` FOREIGN KEY (`IdFrom`) REFERENCES `Devices` (`Id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 

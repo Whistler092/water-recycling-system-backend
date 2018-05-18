@@ -46,9 +46,9 @@ namespace WaterRecycling.Entities
         {
             base.OnModelCreating(modelBuilder);
                     modelBuilder.Entity<RecyclingProcess>()
-                .HasOne(p => p.From)
-                .WithMany(b => b.RecyclingProcessList)
-                .HasForeignKey(f=> f.Id);
+                    .HasOne(p => p.From)
+                    .WithMany(b => b.RecyclingProcessList)
+                    .HasForeignKey(f=> f.IdFrom);
         }
     }
 }

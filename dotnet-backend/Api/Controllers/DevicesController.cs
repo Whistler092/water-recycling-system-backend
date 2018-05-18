@@ -16,11 +16,19 @@ namespace WaterRecycling.Controllers
         [HttpGet("")]
         public async Task<IActionResult> Get([FromQuery]string id)
         {
-            using (DbWaterRecyclingContext db = new DbWaterRecyclingContext())
+            try
             {
-                return Ok(await db.Devices.Where(i => !string.IsNullOrEmpty(id) ? i.Code.Equals(id) : true)
-                                          .Include(i => i.RecyclingProcessList)
-                                          .ToListAsync());
+                using (DbWaterRecyclingContext db = new DbWaterRecyclingContext())
+                {
+                    return Ok(await db.Devices.Where(i => !string.IsNullOrEmpty(id) ? i.Code.Equals(id) : true)
+                                              .Include(i => i.RecyclingProcessList)
+                                              .ToListAsync());
+                }
+            }
+            catch (System.Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError,
+                        ex);
             }
         }
 
@@ -28,33 +36,43 @@ namespace WaterRecycling.Controllers
         [Route("new")]
         public async Task<IActionResult> NewDevice()
         {
-            using (DbWaterRecyclingContext db = new DbWaterRecyclingContext())
+            try
             {
 
-                var exist = false;
-                string code = "";
-                while(!exist)
+           
+                using (DbWaterRecyclingContext db = new DbWaterRecyclingContext())
                 {
-                    code = GenerateUniqueCode();
 
-                    var existCode = await db.Devices.Where(i => i.Code.Equals(code))
-                                            .FirstOrDefaultAsync();
-
-                    if (existCode == null)
+                    var exist = false;
+                    string code = "";
+                    while(!exist)
                     {
-                        exist = true;
+                        code = GenerateUniqueCode();
+
+                        var existCode = await db.Devices.Where(i => i.Code.Equals(code))
+                                                .FirstOrDefaultAsync();
+
+                        if (existCode == null)
+                        {
+                            exist = true;
+                        }
                     }
+
+                    Device device = new Device();
+                    device.Code = code;
+                    device.Created = DateTime.Now;
+                    device.Ip = this.HttpContext.Connection.RemoteIpAddress.ToString();
+
+                    var result = await db.AddAsync(device);
+                    await db.SaveChangesAsync();
+
+                    return Ok(code);
                 }
-
-                Device device = new Device();
-                device.Code = code;
-                device.Created = DateTime.Now;
-                device.Ip = this.HttpContext.Connection.RemoteIpAddress.ToString();
-
-                var result = await db.AddAsync(device);
-                await db.SaveChangesAsync();
-
-                return Ok(code);
+            }
+            catch (System.Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError,
+                        ex);
             }
         }
 
@@ -85,9 +103,42 @@ namespace WaterRecycling.Controllers
                     return Ok(10);
                 }
             }
-            catch (Exception ex)
+            catch (System.Exception ex)
             {
-                return StatusCode((int)HttpStatusCode.InternalServerError, ex);
+                return StatusCode((int)HttpStatusCode.InternalServerError,
+                        ex);
+            }
+        }
+
+        // GET: api/devices
+        [Route("{id}/notifications")]
+        public async Task<IActionResult> NotificationsDevice(string id, [FromQuery] string token)
+        {
+            try
+            {
+                using (DbWaterRecyclingContext db = new DbWaterRecyclingContext())
+                {
+                    var code = await db.Devices.Where(i => i.Code.Equals(id)).FirstOrDefaultAsync();
+
+                    if (code == null)
+                    {
+                        return BadRequest();
+                    }
+
+                    code.DeviceToken = token;
+                    db.Update(code);
+
+                    await db.SaveChangesAsync();
+
+                    Notifications.Notify notify = new Notifications.Notify();
+                    notify.NotifyNewDevice(code);
+                    return Ok(10);
+                }
+            }
+            catch (System.Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError,
+                        ex);
             }
         }
 

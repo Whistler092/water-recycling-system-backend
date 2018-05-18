@@ -136,11 +136,16 @@ namespace WaterRecycling.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Code");
+                    b.Property<string>("Code")
+                        .HasMaxLength(8);
 
                     b.Property<DateTime>("Created");
 
-                    b.Property<string>("Ip");
+                    b.Property<string>("DeviceToken")
+                        .HasMaxLength(512);
+
+                    b.Property<string>("Ip")
+                        .HasMaxLength(64);
 
                     b.Property<bool>("State");
 
@@ -151,17 +156,23 @@ namespace WaterRecycling.Migrations
 
             modelBuilder.Entity("WaterRecycling.Entities.RecyclingProcess", b =>
                 {
-                    b.Property<int>("Id");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<DateTime>("CaptureDate");
 
                     b.Property<decimal>("Distance");
 
-                    b.Property<int>("Process");
+                    b.Property<int>("IdFrom");
+
+                    b.Property<string>("Process")
+                        .HasMaxLength(12);
 
                     b.Property<decimal>("Turbidity");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("IdFrom");
 
                     b.ToTable("RecyclingProcesses");
                 });
@@ -275,7 +286,7 @@ namespace WaterRecycling.Migrations
                 {
                     b.HasOne("WaterRecycling.Entities.Device", "From")
                         .WithMany("RecyclingProcessList")
-                        .HasForeignKey("Id")
+                        .HasForeignKey("IdFrom")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
