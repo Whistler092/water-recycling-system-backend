@@ -2,6 +2,7 @@
 namespace WaterRecycling.Controllers
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Net;
     using System.Threading.Tasks;
@@ -9,7 +10,7 @@ namespace WaterRecycling.Controllers
     using Microsoft.EntityFrameworkCore;
     using WaterRecycling.Entities;
 
-    [Microsoft.AspNetCore.Mvc.Route("api/[controller]")]
+    [Route("api/[controller]")]
     public class DevicesController : Controller
     {
         // GET: api/devices
@@ -20,17 +21,88 @@ namespace WaterRecycling.Controllers
             {
                 using (DbWaterRecyclingContext db = new DbWaterRecyclingContext())
                 {
-                    return Ok(await db.Devices.Where(i => !string.IsNullOrEmpty(id) ? i.Code.Equals(id) : true)
+                    var devices = await db.Devices.Where(i => string.IsNullOrEmpty(id) || i.Code.Equals(id))
                                               .Include(i => i.RecyclingProcessList)
-                                              .ToListAsync());
+                                          .ToListAsync();
+
+
+                    return Ok(devices.Select(i => new
+                    {
+                        i.Code,
+                        i.Ip,
+                        i.Created,
+                        i.State,
+                        recyclingProcessList = i.RecyclingProcessList.Count,
+                        recyclingProcessCount = LocalGroupBy(i.RecyclingProcessList)
+                    }));
                 }
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 return StatusCode((int)HttpStatusCode.InternalServerError,
                         ex);
             }
         }
+
+        private int LocalGroupBy(List<RecyclingProcess> recyclingProcessList)
+        {
+            return recyclingProcessList
+                .GroupBy(i => new { i.Process })
+                .Select(g => new { g.Key.Process }).Count();
+        }
+
+        // GET: api/devices
+        [Route("{id}/full")]
+        public async Task<IActionResult> GetFull([FromQuery]string id)
+        {
+            try
+            {
+                using (DbWaterRecyclingContext db = new DbWaterRecyclingContext())
+                {
+                    var devices = await db.Devices.Where(i => string.IsNullOrEmpty(id) || i.Code.Equals(id))
+                                              .Include(i => i.RecyclingProcessList)
+                                          .ToListAsync();
+
+
+                    return Ok(devices);
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError,
+                        ex);
+            }
+        }
+
+        // GET: api/devices
+        [Route("{id}/lite")]
+        public async Task<IActionResult> GetLiteById(string id)
+        {
+            try
+            {
+                using (DbWaterRecyclingContext db = new DbWaterRecyclingContext())
+                {
+                    var processes = await db.RecyclingProcesses
+                                          .Where(i => string.IsNullOrEmpty(id) || i.From.Code.Equals(id))
+                                          .Include(i => i.From)
+                                          .ToListAsync();
+
+
+                    return Ok(new
+                    {
+                        LastProcessId = processes.LastOrDefault()?.Process,
+                        recyclingProcessCount = processes.Count
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError,
+                        ex);
+            }
+        }
+
+
 
         // GET: api/devices
         [Route("new")]
@@ -39,13 +111,13 @@ namespace WaterRecycling.Controllers
             try
             {
 
-           
+
                 using (DbWaterRecyclingContext db = new DbWaterRecyclingContext())
                 {
 
                     var exist = false;
                     string code = "";
-                    while(!exist)
+                    while (!exist)
                     {
                         code = GenerateUniqueCode();
 
@@ -69,7 +141,7 @@ namespace WaterRecycling.Controllers
                     return Ok(code);
                 }
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 return StatusCode((int)HttpStatusCode.InternalServerError,
                         ex);
@@ -103,7 +175,7 @@ namespace WaterRecycling.Controllers
                     return Ok(10);
                 }
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 return StatusCode((int)HttpStatusCode.InternalServerError,
                         ex);
@@ -135,7 +207,7 @@ namespace WaterRecycling.Controllers
                     return Ok(10);
                 }
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 return StatusCode((int)HttpStatusCode.InternalServerError,
                         ex);

@@ -32,7 +32,7 @@ namespace WaterRecycling.Entities
                        $"database={databaseName};" +
                        $"uid={databaseUser};" +
                        $"pwd={databasePass};" +
-                       $"pooling=true;";
+                       $"pooling=true;;SslMode=none";
             }
         }
         public new DbSet<User> Users { get; set; }

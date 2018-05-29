@@ -1,18 +1,19 @@
 ﻿<Properties StartupConfiguration="{CA6E0354-BA2C-4AA5-9EDC-9D1546E78F77}|Default">
   <MonoDevelop.Ide.ItemProperties.WaterRecycling PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Api/Notifications/Notify.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Api/Controllers/EventsController.cs">
     <Files>
-      <File FileName="Api/Controllers/DevicesController.cs" Line="133" Column="1" />
-      <File FileName="Api/Entities/Device.cs" Line="14" Column="9" />
-      <File FileName="Api/Entities/RecyclingProcess.cs" Line="13" Column="22" />
-      <File FileName="Api/Notifications/Notify.cs" Line="69" Column="1" />
+      <File FileName="Api/Controllers/DevicesController.cs" Line="62" Column="48" />
+      <File FileName="Api/Entities/RecyclingProcess.cs" Line="24" Column="27" />
+      <File FileName="Api/Controllers/EventsController.cs" Line="123" Column="1" />
+      <File FileName="Api/Program.cs" Line="17" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
-      <Breakpoint file="/Users/ramirobedoya/workspace/water-recycling-system-backend/dotnet-backend/Api/Controllers/DevicesController.cs" relfile="Api/Controllers/DevicesController.cs" line="116" column="1" />
+      <Breakpoint file="/Users/ramirobedoya/workspace/water-recycling-system-backend/dotnet-backend/Api/Controllers/DevicesController.cs" relfile="Api/Controllers/DevicesController.cs" line="188" column="1" />
       <Breakpoint file="/Users/ramirobedoya/workspace/water-recycling-system-backend/dotnet-backend/Api/Notifications/Notify.cs" relfile="Api/Notifications/Notify.cs" line="16" column="1" />
+      <Breakpoint file="/Users/ramirobedoya/workspace/water-recycling-system-backend/dotnet-backend/Api/Controllers/EventsController.cs" relfile="Api/Controllers/EventsController.cs" line="20" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
